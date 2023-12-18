@@ -29,7 +29,7 @@ php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-### credentails
+### credentials
 ```
 username: admin
 password: 1234
