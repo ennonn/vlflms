@@ -35,4 +35,17 @@ username: admin
 password: 1234
 ```
 
-
+### test the api
+#### Daily
+```
+http://127.0.0.1:8000/api/reports/date-wise?date=2023-12-15
+```
+#### Monthly
+```
+http://127.0.0.1:8000/api/reports/month-wise?month=2023-12
+```
+#### Not returned
+```
+http://127.0.0.1:8000/api/reports/not-returned
+```
+check your url first, it may not match with the api url.
