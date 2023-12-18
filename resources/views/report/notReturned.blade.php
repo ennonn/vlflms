@@ -1,4 +1,5 @@
-@extends("layouts.app")
+@extends('layouts.app')
+
 @section('content')
     <div id="admin-content">
         <div class="container">
@@ -7,12 +8,13 @@
                     <h2 class="admin-heading text-center">Not Returned Books</h2>
                 </div>
             </div>
-            @if ($books)
+
+            @if ($books && count($books) > 0)
                 <div class="row">
                     <div class="col-md-12">
                         <table class="content-table">
                             <thead>
-                                <th>S.No</th>
+                                <th>ID No.</th>
                                 <th>Student Name</th>
                                 <th>Book Name</th>
                                 <th>Phone</th>
@@ -22,31 +24,33 @@
                                 <th>Over Days</th>
                             </thead>
                             <tbody>
-                                @forelse ($books as $book)
+                                @foreach ($books as $book)
                                     <tr>
-                                        <td>{{ $book->id }}</td>
-                                        <td>{{ $book->student->name }}</td>
-                                        <td>{{ $book->book->name }}</td>
-                                        <td>{{ $book->student->phone }}</td>
-                                        <td>{{ $book->student->email }}</td>
-                                        <td>{{ $book->issue_date->format('d M, Y') }}</td>
-                                        <td>{{ $book->return_date->format('d M, Y') }}</td>
-                                        <td>@php $date1 = date_create(date('Y-m-d'));
-                                            $date2 = date_create($book->return_date->format('d-m-Y'));
-                                            if($date1 > $date2){
-                                              $diff = date_diff($date1,$date2);
-                                              echo $days = $diff->format('%a days');
-                                            }else{
-                                              echo '0 days';
-                                            } @endphp</td>
+                                        <td>{{ $book['id'] }}</td>
+                                        <td>{{ $book['student']['name'] }}</td>
+                                        <td>{{ $book['book']['name'] }}</td>
+                                        <td>{{ $book['student']['phone'] }}</td>
+                                        <td>{{ $book['student']['email'] }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($book['issue_date'])->format('d M, Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($book['return_date'])->format('d M, Y') }}</td>
+                                        <td>
+                                            @php
+                                                $date1 = now();
+                                                $date2 = \Carbon\Carbon::parse($book['return_date']);
+                                                $diff = $date1->diff($date2);
+                                                echo $diff->days . ' days';
+                                            @endphp
+                                        </td>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="10">No Record Found!</td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            @else
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>No Record Found!</p>
                     </div>
                 </div>
             @endif

@@ -1,4 +1,5 @@
-@extends("layouts.app")
+@extends('layouts.app')
+
 @section('content')
     <div id="admin-content">
         <div class="container">
@@ -18,7 +19,8 @@
                     </form>
                 </div>
             </div>
-            @if ($books)
+
+            @if ($books && count($books) > 0)
                 <div class="row">
                     <div class="col-md-12">
                         <table class="content-table">
@@ -31,22 +33,24 @@
                                 <th>Issue Date</th>
                             </thead>
                             <tbody>
-                                @forelse ($books as $book)
+                                @foreach ($books as $book)
                                     <tr>
-                                        <td>{{ $book->id }}</td>
-                                        <td>{{ $book->student->name }}</td>
-                                        <td>{{ $book->book->name }}</td>
-                                        <td>{{ $book->student->phone }}</td>
-                                        <td>{{ $book->student->email }}</td>
-                                        <td>{{ $book->issue_date->format('d M, Y') }}</td>
+                                        <td>{{ $book['id'] }}</td>
+                                        <td>{{ $book['student']['name'] }}</td>
+                                        <td>{{ $book['book']['name'] }}</td>
+                                        <td>{{ $book['student']['phone'] }}</td>
+                                        <td>{{ $book['student']['email'] }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($book['issue_date'])->format('d M, Y') }}</td>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="10">No Record Found!</td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            @else
+                <div class="row">
+                    <div class="col-md-12">
+                        <p>No Record Found!</p>
                     </div>
                 </div>
             @endif

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ReportsApiController;
+use App\Http\Controllers\Api\ReportApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +15,6 @@ use App\Http\Controllers\Api\ReportsApiController;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-    Route::post('reports/date-wise-generate', [ReportsApiController::class, 'dateWiseGenerate'])
-        ->name('api.reports.date_wise_generate');
-
-    Route::post('reports/generate-month-wise-report', [ReportsApiController::class, 'generateMonthWiseReport']);
-    Route::get('reports/not-returned', [ReportsApiController::class, 'notReturned']);
-});
+    Route::get('/reports/date-wise', [ReportApiController::class, 'apiDateWise']);
+    Route::get('/reports/month-wise', [ReportApiController::class, 'apiMonthWise']);
+    Route::get('/reports/not-returned', [ReportApiController::class, 'apiNotReturned']);

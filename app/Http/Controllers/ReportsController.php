@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\book;
 use App\Models\book_issue;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ReportsController extends Controller
 {
@@ -44,5 +45,25 @@ class ReportsController extends Controller
         return view('report.notReturned',[
             'books' => book_issue::latest()->get()
         ]);
+    }
+
+    public function apiDateWise(Request $request)
+    {
+        $request->validate(['date' => "required|date"]);
+        $books = book_issue::where('issue_date', $request->date)->latest()->get();
+        return response()->json($books);
+    }
+
+    public function apiMonthWise(Request $request)
+    {
+        $request->validate(['month' => "required|date"]);
+        $books = book_issue::where('issue_date', 'LIKE', '%' . $request->month . '%')->latest()->get();
+        return response()->json($books);
+    }
+
+    public function apiNotReturned()
+    {
+        $books = book_issue::latest()->get();
+        return response()->json($books);
     }
 }
